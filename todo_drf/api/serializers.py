@@ -1,16 +1,15 @@
 from rest_framework import serializers
-from .models import Task
+from .models import Task,Products
 from rest_framework import exceptions
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-
 User=get_user_model()
 
 class TaskSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Task
-		fields ='__all__'
-    
+    class Meta:
+        model = Task
+        fields = '__all__'
+         
 class UserSerializer(serializers.ModelSerializer):
     password=serializers.CharField(max_length=65,min_length=6,write_only=True)
     email = serializers.EmailField(max_length=255,min_length=6),
@@ -62,3 +61,14 @@ class LoginSerializer(serializers.Serializer):
             msg = "Must provide username and password both."
             raise exceptions.ValidationError(msg)
         return data
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    prod_id = serializers.CharField(source='id')
+    class Meta:
+        model = Products
+        fields = '__all__'
+        fields=('prod_id','title','desc','image','available')
+
+
+      
